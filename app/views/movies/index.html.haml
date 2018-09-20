@@ -1,17 +1,18 @@
--#  This file is app/views/movies/index.html.haml  
+-#  This file is app/views/movies/index.html.haml 
+%div " Ratings: params - #{ params[:ratings] } | session #{ session[:rating_params] }"" Sort_by: params - #{ params[:sort_by] } | session #{ session[:sorted] }" 
 %h1 All Movies
 = form_tag movies_path, :method => :get , :id => 'ratings_form' do
   Include:
   - @all_ratings.each do |rating|
     = rating
-    = check_box_tag "ratings[#{rating}]", '', params[:"#{rating}"], :id => "ratings_#{ rating }"
+    = check_box_tag "ratings[#{rating}]", '',('checked' if @params.include?rating), :id => "ratings_#{ rating }"
   = submit_tag 'Refresh', :id => 'ratings_submit'
 %table#movies
   %thead
     %tr
-      %th{:class => ("hilite" if params[:sort_by] == 'title')}= link_to 'Movie Title', movies_path(:sort_by => 'title'), :id => 'title_header'
+      %th{:class => (@style_sort_by)}= link_to 'Movie Title', movies_path(:sort_by => 'title'), :id => 'title_header'
       %th Rating
-      %th{:class => ("hilite" if params[:sort_by] == 'release_date')}= link_to 'Release Date', movies_path(:sort_by => 'release_date'), :id => 'release_date_header'
+      %th{:class => (@style_ratings)}= link_to 'Release Date', movies_path(:sort_by => 'release_date'), :id => 'release_date_header'
       %th More Info
   %tbody
     - @movies.each do |movie|
